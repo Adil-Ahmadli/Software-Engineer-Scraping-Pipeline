@@ -17,4 +17,4 @@ COPY . .
 WORKDIR /app/jobs_project
 
 # Set the entrypoint command to run the Scrapy spider
-CMD scrapy crawl jobs_spider
+CMD scrapy crawl job_spider

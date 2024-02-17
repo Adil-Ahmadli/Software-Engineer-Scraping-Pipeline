@@ -2,7 +2,7 @@ import json
 import scrapy
 
 class JobSpider(scrapy.Spider):
-	name = 'job_spider'
+	name = "job_spider"
 	#custom_settings = {
     #	'ITEM_PIPELINES': {
     #    		'job_spider.pipelines.yourPipeline': 300,
@@ -18,7 +18,7 @@ class JobSpider(scrapy.Spider):
 		# if you can't get this to work, do not waste too much time here
 		# instead load the json file inside parse_page
 		yield scrapy.Request(
-					url='file:////home/PATH_TO_JSON', 
+					url='file:////home/adil/Desktop/Software-Engineer-Scraping-Pipeline/s01.json', 
 					callback=self.parse_page,
 					)
 		pass
