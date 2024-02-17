@@ -1,5 +1,7 @@
 import json
 import scrapy
+from jobs_project.items import JobsProjectItem
+from jobs_project.spiders.helper import nullify
 
 class JobSpider(scrapy.Spider):
 	name = "job_spider"
@@ -13,20 +15,20 @@ class JobSpider(scrapy.Spider):
 		pass
 
 	def start_requests(self):
-		# your code here
-		# make sure you can send a request locally at the file
-		# if you can't get this to work, do not waste too much time here
-		# instead load the json file inside parse_page
 		yield scrapy.Request(
-					url='file:////home/adil/Desktop/Software-Engineer-Scraping-Pipeline/s01.json', 
-					callback=self.parse_page,
+						url='file:///home/adil/Desktop/Software-Engineer-Scraping-Pipeline/s01.json', 
+						callback=self.parse,
 					)
-		pass
 			
 
 	def parse(self, response):
-        # your code here
-		# load json files using response.text
-        # loop over data
-		# return items
-		pass
+		data 	 =  json.loads(response.text)
+		length   =  len(data["jobs"])
+		for i in range(length):
+			job = JobsProjectItem()
+			job = nullify(job)
+			keys = data["jobs"][i]["data"].keys()
+			for key in keys:
+				job[key] = data["jobs"][i]["data"][key]
+
+			yield job
