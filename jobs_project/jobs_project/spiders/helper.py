@@ -14,7 +14,7 @@ def nullify(job):
     job["location_type"] = None
     job["latitude"] = None
     job["longitude"] = None
-    job["categories"] = None
+    #job["categories"] = None
     job["tags"] = None
     job["tags1"] = None
     job["tags2"] = None
@@ -43,7 +43,7 @@ def nullify(job):
     job["applyable"] = None
     job["li_easy_applyable"] = None
     job["ats_code"] = None
-    job["meta_data"] = None
+    #job["meta_data"] = None
     job["update_date"] = None
     job["create_date"] = None
     job["category"] = None

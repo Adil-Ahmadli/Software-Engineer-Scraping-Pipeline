@@ -1,22 +1,47 @@
 version: '3'
 services:
-  scrapy:
-    build:
-      dockerfile: dockerfile
-
   postgres:
     image: postgres:latest
     environment:
-      - POSTGRES_USER=your_username
-      - POSTGRES_PASSWORD=your_password
-      - POSTGRES_DB=your_database
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: jobs
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost", "-p", "5432", "-U", "postgres"]
+      interval: 10s
+      retries: 10
+    restart: always
 
   mongo:
     image: mongo:latest
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=your_username
-      - MONGO_INITDB_ROOT_PASSWORD=your_password
-      - MONGO_INITDB_DATABASE=your_database
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+      MONGO_INITDB_DATABASE: jobs
+    ports:
+      - "5433:5433"
+    restart: always
 
   redis:
     image: redis:latest
+    ports:
+      - "5434:5434"
+    restart: always
+
+  scrapy:
+    build:
+      dockerfile: dockerfile
+    ports:
+      - "5431:5431"
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+      mongo:
+        condition: service_started
+        restart: true
+      redis:
+        condition: service_started
+        restart: true

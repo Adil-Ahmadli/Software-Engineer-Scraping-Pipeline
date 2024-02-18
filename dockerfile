@@ -16,5 +16,7 @@ COPY . .
 # Change directory to the jobs_project folder
 WORKDIR /app/jobs_project
 
+EXPOSE 5431
+
 # Set the entrypoint command to run the Scrapy spider
-CMD scrapy crawl job_spider
+CMD scrapy crawl job_spider -o output.json
