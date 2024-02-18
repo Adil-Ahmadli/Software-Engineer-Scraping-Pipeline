@@ -84,7 +84,7 @@ def main():
         port=5433
     )
     mongo_db.connect()
-    #mongo_data = mongo_db.fetch_data("your_collection_name")
+    #mongo_data = mongo_db.fetch_data("raw_collection")
     mongo_db.close()
 
     # Write data to CSV files

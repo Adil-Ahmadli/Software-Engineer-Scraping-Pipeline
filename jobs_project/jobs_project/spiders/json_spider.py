@@ -9,6 +9,7 @@ class JobSpider(scrapy.Spider):
     	'ITEM_PIPELINES': {
         		'jobs_project.pipelines.JobsProjectPipeline': 300,
 				'jobs_project.pipelines.SaveToDatabasePipeline': 400,
+				'jobs_project.pipelines.SaveToMongoDBPipeline': 500,
     	},
 	}
 

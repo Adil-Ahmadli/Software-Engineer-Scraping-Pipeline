@@ -2,6 +2,7 @@ from itemadapter import ItemAdapter
 import psycopg2
 from psycopg2.extensions import register_adapter, AsIs
 import json
+import pymongo
 
 def adapt_dict(dict_var):
     return AsIs("'" + json.dumps(dict_var) + "'")
@@ -107,3 +108,67 @@ class SaveToDatabasePipeline:
     def close_spider(self, spider):
         self.cursor.close()
         self.connection.close()
+
+
+class SaveToMongoDBPipeline:
+    def __init__(self):
+        self.client = pymongo.MongoClient("localhost", 5433)
+        self.db = self.client["jobs"]
+        self.collection = self.db["raw_collection"]
+
+    def process_item(self, item, spider):
+        self.collection.insert_one({
+            "slug": item['slug'],
+            "language": item['language'],
+            "languages": item['languages'],
+            "req_id": item['req_id'],
+            "title": item['title'],
+            "description": item['description'],
+            "street_address": item['street_address'],
+            "city": item['city'],
+            "state": item['state'],
+            "country": item['country'],
+            "country_code": item['country_code'],
+            "postal_code": item['postal_code'],
+            "location_type": item['location_type'],
+            "latitude": item['latitude'],
+            "longitude": item['longitude'],
+            "tags": item['tags'],
+            "tags1": item['tags1'],
+            "tags2": item['tags2'],
+            "tags5": item['tags5'],
+            "tags6": item['tags6'],
+            "tags8": item['tags8'],
+            "brand": item['brand'],
+            "department": item['department'],
+            "recruiter_id": item['recruiter_id'],
+            "promotion_value": item['promotion_value'],
+            "salary_frequency": item['salary_frequency'],
+            "salary_value": item['salary_value'],
+            "salary_min_value": item['salary_min_value'],
+            "salary_max_value": item['salary_max_value'],
+            "salary_currency": item['salary_currency'],
+            "employment_type": item['employment_type'],
+            "work_hours": item['work_hours'],
+            "benefits": item['benefits'],
+            "hiring_organization": item['hiring_organization'],
+            "source": item['source'],
+            "posted_date": item['posted_date'],
+            "posting_expiry_date": item['posting_expiry_date'],
+            "apply_url": item['apply_url'],
+            "internal": item['internal'],
+            "searchable": item['searchable'],
+            "applyable": item['applyable'],
+            "li_easy_applyable": item['li_easy_applyable'],
+            "ats_code": item['ats_code'],
+            "update_date": item['update_date'],
+            "create_date": item['create_date'],
+            "category": item['category'],
+            "location_name": item['location_name'],
+            "full_location": item['full_location'],
+            "short_location": item['short_location']
+        })
+        return item
+    
+    def close_spider(self, spider):
+        self.client.close()
