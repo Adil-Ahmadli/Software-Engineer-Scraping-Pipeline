@@ -1,20 +1,20 @@
-# Use the official Python image as the base image
-FROM python:3.9-slim
+# Use the official Ubuntu image as a base
+FROM ubuntu:latest
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Search for postgresql-client package
-RUN apt-cache search postgresql-client
+# Update package lists and install necessary packages
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends python3 python3-pip  postgresql-client && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install PostgreSQL client tools
-RUN sudo apt-get install -y --no-install-recommends postgresql-client
 
 # Copy the requirements file to the working directory
 COPY requirements.txt .
 
 # Install the Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 # Copy the waiting script into the container at /app
 COPY wait_for_postgres.sh .

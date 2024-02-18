@@ -8,10 +8,6 @@ services:
       POSTGRES_DB: jobs
     ports:
       - "5432:5432"
-    healthcheck:
-      test: ["CMD", "pg_isready", "-h", "localhost", "-p", "5432", "-U", "postgres"]
-      interval: 10s
-      retries: 10
     restart: always
 
   mongo:
@@ -37,7 +33,7 @@ services:
       - "5431:5431"
     depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_started
         restart: true
       mongo:
         condition: service_started
